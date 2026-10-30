@@ -1,0 +1,48 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Overlay</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #000; overflow: hidden;
+               font: 13px system-ui, sans-serif; color: #eee; }
+  #bar { position: fixed; inset: 0 0 auto 0; height: 52px; display: flex; gap: 6px;
+         align-items: center; padding: 0 8px; background: #111c; opacity: .2;
+         transition: opacity .15s; -webkit-app-region: drag; }
+  body:hover #bar, #bar:focus-within { opacity: 1; }
+  /* bande épaisse en bas aussi : de quoi attraper la fenêtre sans viser */
+  #grabber { position: fixed; inset: auto 0 0 0; height: 22px; -webkit-app-region: drag; }
+  #grip { padding: 0 4px; color: #888; letter-spacing: 2px; cursor: move; }
+  #url { flex: 1; min-width: 0; -webkit-app-region: no-drag; background: #222; color: #eee;
+         border: 1px solid #444; border-radius: 4px; padding: 4px 6px; }
+  button { -webkit-app-region: no-drag; background: #222; color: #eee; border: 1px solid #444;
+           border-radius: 4px; padding: 4px 8px; cursor: pointer; }
+  button:hover { background: #333; }
+  iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  #hint { position: absolute; inset: 0; display: grid; place-items: center; text-align: center;
+          padding: 20px; color: #888; }
+</style>
+<div id="hint">Survole le haut de la fenêtre, colle un lien Twitch / YouTube, Entrée.<br>
+  Bords = redimensionner · barre du haut ou du bas = déplacer</div>
+<iframe id="player" allow="autoplay; fullscreen; encrypted-media" hidden></iframe>
+<div id="grabber"></div>
+<div id="bar">
+  <span id="grip">⠿</span>
+  <input id="url" placeholder="twitch.tv/… ou youtube.com/watch?v=…" spellcheck="false">
+  <button id="go">▶</button>
+  <button id="close">✕</button>
+</div>
+<script src="embed.js"></script>
+<script>
+  const input = document.getElementById('url'), frame = document.getElementById('player');
+  function play() {
+    const src = toEmbed(input.value, location.hostname);
+    if (!src) return;
+    frame.src = src; frame.hidden = false;
+    document.getElementById('hint').hidden = true;
+    localStorage.setItem('last', input.value);
+    input.blur();
+  }
+  document.getElementById('go').onclick = play;
+  input.onkeydown = e => { if (e.key === 'Enter') play(); };
+  document.getElementById('close').onclick = () => window.close();
+  input.value = localStorage.getItem('last') || '';
+</script>

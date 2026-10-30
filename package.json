@@ -1,0 +1,41 @@
+{
+  "name": "floating-player",
+  "productName": "Overlay",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "node test.js",
+    "dist": "electron-builder --win portable"
+  },
+  "devDependencies": {
+    "electron": "^45.2.0",
+    "electron-builder": "^26.18.0"
+  },
+  "build": {
+    "appId": "local.overlay",
+    "files": [
+      "main.js",
+      "index.html",
+      "embed.js"
+    ],
+    "win": {
+      "target": "portable"
+    },
+    "portable": {
+      "artifactName": "Overlay.exe"
+    }
+  },
+  "description": "Tiny always-on-top window that plays any Twitch or YouTube link over everything else.",
+  "license": "MIT",
+  "keywords": [
+    "electron",
+    "overlay",
+    "always-on-top",
+    "twitch",
+    "youtube",
+    "picture-in-picture",
+    "floating-window",
+    "windows"
+  ]
+}

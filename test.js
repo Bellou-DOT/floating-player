@@ -1,0 +1,13 @@
+const assert = require('assert');
+const { toEmbed } = require('./embed.js');
+const p = 'localhost';
+assert.match(toEmbed('https://www.youtube.com/watch?v=dQw4w9WgXcQ', p), /youtube\.com\/embed\/dQw4w9WgXcQ/);
+assert.match(toEmbed('https://youtu.be/dQw4w9WgXcQ?t=42', p), /embed\/dQw4w9WgXcQ/);
+assert.match(toEmbed('youtube.com/shorts/dQw4w9WgXcQ', p), /embed\/dQw4w9WgXcQ/);
+assert.match(toEmbed('https://www.twitch.tv/zerator', p), /player\.twitch\.tv\/\?channel=zerator&parent=localhost/);
+assert.match(toEmbed('twitch.tv/videos/123456', p), /\?video=123456&parent=localhost/);
+assert.match(toEmbed('https://clips.twitch.tv/SomeClipSlug', p), /embed\?clip=SomeClipSlug/);
+assert.strictEqual(toEmbed('https://example.com/stream.m3u8', p), 'https://example.com/stream.m3u8');
+assert.strictEqual(toEmbed('example.com', p), 'https://example.com');
+assert.strictEqual(toEmbed('  ', p), '');
+console.log('ok');
